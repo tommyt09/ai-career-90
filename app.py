@@ -1,37 +1,63 @@
-# app.py - Titanic Survival Predictor
+# app.py - AI Portfolio Dashboard (Day 5)
 import streamlit as st
-import joblib
-import numpy as np
+from PIL import Image
+import requests
+from io import BytesIO
 
-# Load model
-@st.cache_resource
-def load_model():
-    return joblib.load("titanic_model.pkl")
+st.set_page_config(page_title="Tommy Taylor | AI Engineer", layout="centered")
 
-st.title("🚢 Titanic Survival Predictor")
-st.write("Built by @Tommytaylor09 | Day 2 of 90 to AI job")
+# Sidebar navigation
+st.sidebar.title("🚀 My AI Projects")
+page = st.sidebar.radio("Go to", [
+    "🏠 Home",
+    "🚢 Titanic Survival",
+    "🧠 TweetVibe",
+    "🤖 GrokMini Chatbot",
+    "👨‍💻 About Me"
+])
 
-# Input form
-col1, col2 = st.columns(2)
-with col1:
-    pclass = st.selectbox("Ticket Class", [1, 2, 3], help="1 = Rich, 3 = Poor")
-    sex = st.selectbox("Sex", ["Male", "Female"])
-with col2:
-    age = st.slider("Age", 1, 80, 30)
-    fare = st.slider("Fare (£)", 0, 500, 32)
+# ——— HOME ———
+if page == "🏠 Home":
+    st.title("Tommy Taylor – AI Engineer")
+    st.write("### 90-Day Challenge: From £0 → AI Job")
+    st.write("Built & deployed 5 AI apps in 5 days with @grok")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.success("Day 1–2: ML + Web App")
+        st.info("Day 3: NLP Sentiment")
+    with col2:
+        st.success("Day 4: Llama 3 Chatbot")
+        st.info("Day 5: This Portfolio")
 
-# Predict
-if st.button("Predict Survival"):
-    try:
-        model = load_model()
-        sex_num = 1 if sex == "Female" else 0
-        input_data = np.array([[pclass, sex_num, age, fare]])
-        pred = model.predict_proba(input_data)[0][1]
-        survival = pred * 100
-        st.metric("Survival Chance", f"{survival:.1f}%")
-        if survival > 50:
-            st.success("🟢 Likely to survive!")
-        else:
-            st.warning("🔴 High risk...")
-    except:
-        st.error("Upload `titanic_model.pkl` to repo root to activate AI")
+    st.balloons()
+
+# ——— TITANIC ———
+elif page == "🚢 Titanic Survival":
+    st.header("🚢 Titanic Survival Predictor")
+    st.write("Classic ML model deployed with Streamlit")
+    st.link_button("Open App →", "https://ai-career-90-mxl9n59gb25cmpjasd4p6c.streamlit.app")
+
+# ——— TWEETVIBE ———
+elif page == "🧠 TweetVibe":
+    st.header("🧠 TweetVibe – Sentiment Analyzer")
+    st.write("Real-time emotion detection using Hugging Face")
+    st.link_button("Open App →", "https://ai-career-90-8c9xdkqnzrf56hggppbtkd.streamlit.app")
+
+# ——— GROKMINI ———
+elif page == "🤖 GrokMini Chatbot":
+    st.header("🤖 GrokMini – Personal AI Chatbot")
+    st.write("Powered by Llama 3 + memory")
+    st.link_button("Talk to GrokMini →", "https://ai-career-90-gwa2piga66evzf35pkkrpx.streamlit.app")
+
+# ——— ABOUT ———
+elif page == "👨‍💻 About Me":
+    st.header("Tommy Taylor")
+    st.write("UK | Self-taught AI Engineer | Building in public")
+    st.write("🔗 GitHub: https://github.com/tommytaylor09")
+    st.write("🔗 X: https://x.com/tommytaylor09")
+    st.write("📧 Email: tommytaylor09@gmail.com (or DM me)")
+    st.write("Currently open to junior AI/ML roles in London/remote")
+
+st.sidebar.markdown("---")
+st.sidebar.caption("Day 5/90 · Built with @grok · Nov 2025")
